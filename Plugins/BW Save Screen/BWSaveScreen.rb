@@ -28,6 +28,10 @@ class PokemonSave_Scene
       @sprites["bg"].setBitmap("Graphics/UI/Save/bw2_background")
 	  base = bw2baseColor
 	  shadow = bw2shadowColor
+    when 2 # Alola Background, needs Alola Save Screen
+	@sprites["bg"].setBitmap("Graphics/UI/Save/alola_background")
+	  base = bwbaseColor
+	  shadow = bwshadowColor
     end 
 	
     # Creating Party Icons.
@@ -46,13 +50,23 @@ class PokemonSave_Scene
     
     pbSetSystemFont(@sprites["overlay"].bitmap)
     textos=[]
-
-	textos.push([_ISPRINTF("{1:02d} : {2:02d}", Time.now.hour, Time.now.min),256,7,2,base,shadow]) if UI_Save::CLOCK
-	textos.push([_INTL("Badges: {1}",$player.badge_count),48,205,false,base,shadow])
-	textos.push([_INTL("Pokédex: {1}", $player.pokedex.seen_count),256,205,false,base,shadow])
-	textos.push([_INTL("{1}",$game_map.name),48,90,false,base,shadow])
-	textos.push([_INTL("Time: {1}", time),48,236,false,base,shadow])
-	textos.push([_INTL("{1}", datenow),46,58,false,base,shadow])
+	if PluginManager.installed?("Alola Save Screen")
+		for i in 0...$player.party.length
+			@sprites["pokemon#{i}"].y = 68
+		end
+		xpos = 32
+		textos.push([_INTL("{1}", datenow),xpos,14,false,base,shadow])
+		textos.push([_INTL("{1}",$game_map.name),xpos,46,false,base,shadow])
+		textos.push([_INTL("Pokédex: {1}", $player.pokedex.seen_count),xpos,150,false,base,shadow])
+		textos.push([_INTL("Play time: {1}", time),xpos,180,false,base,shadow])
+	else
+		textos.push([_ISPRINTF("{1:02d} : {2:02d}", Time.now.hour, Time.now.min),256,7,2,base,shadow]) if UI_Save::CLOCK
+		textos.push([_INTL("Badges: {1}",$player.badge_count),48,205,false,base,shadow])
+		textos.push([_INTL("Pokédex: {1}", $player.pokedex.seen_count),256,205,false,base,shadow])
+		textos.push([_INTL("{1}",$game_map.name),48,90,false,base,shadow])
+		textos.push([_INTL("Time: {1}", time),48,236,false,base,shadow])
+		textos.push([_INTL("{1}", datenow),46,58,false,base,shadow])
+	end
 	pbDrawTextPositions(overlay,textos) 		
   end
   
