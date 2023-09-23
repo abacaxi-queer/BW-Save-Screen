@@ -1,0 +1,5 @@
+Name = BW Save Screen
+Version = 1.2
+Essentials = 21,21.1
+Credits = Eurritima, HDrawer, shiney570
+Website = https://reliccastle.com/resources/460/
